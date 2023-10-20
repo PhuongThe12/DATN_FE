@@ -89,3 +89,14 @@ app.controller("updatemauSacController", function ($scope, $http, $routeParams, 
             })
     };
 });
+
+app.controller('detailMauSacController', function ($scope, $routeParams, $http) {
+    const id = $routeParams.id;
+    $http.get(host + '/admin/rest/mau-sac/' + id)
+        .then(function (response) {
+            $scope.mauSac = response.data;
+        }).catch(function (error) {
+            toastr["error"]("Lấy dữ liệu thất bại");
+            $location.path("/danhsach");
+        });
+});
