@@ -1,0 +1,20 @@
+<a class="btn btn-primary" href="#/add">Thêm màu sắc</a>
+
+<div>
+    <table class="table" border="1">
+        <tr>
+            <th>ID</th>
+            <th>Tên</th>
+            <th></th>
+        </tr>
+
+        <tr ng-repeat="mauSac in mauSacs">
+            <td>{{mauSac.id}}</td>
+            <td>{{mauSac.ten}}</td>
+            <td>
+                <a class="btn btn-info" ng-href="#/detail/{{mauSac.id}}">Chi tiết</a>
+                <a class="btn btn-info" ng-href="#/update/{{mauSac.id}}">Cập nhật</a>
+            </td>
+        </tr>
+    </table>
+</div>
