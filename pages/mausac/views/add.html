@@ -1,18 +1,19 @@
 <h1>Thêm màu sắc</h1>
 
-<form name="mauSacForm" ng-submit="addmauSac()">
+<form name="mauSacForm" ng-submit="addMauSac()">
     <div class="form-group">
         <label for="mauSacTen">Tên</label>
-        <input type="text" class="form-control" id="mauSacTen" name="ten" ng-model="mauSac.ten" ng-maxlength="50" required>
+        <input type="text" class="form-control" id="mauSacTen" name="ten" ng-model="mauSac.ten" ng-maxlength="50" ng-required="true"
+            ng-change="change(mauSacForm.ten)">
         <small class="error-message" ng-show="(mauSacForm.ten.$dirty || mauSacForm.ten.$touched) && mauSacForm.ten.$error.required">Không được để
             trống tên</small>
         <small class="error-message" ng-show="(mauSacForm.ten.$dirty || mauSacForm.ten.$touched) && mauSacForm.ten.$error.maxlength">Tên không được
             vượt quá 50 ký tự</small>
-        <small class="error-message" ng-show="errors.ten">{{errors.ten}}</small>
+        <small class="error-message" ng-show="errors.ten && !mauSacForm.ten.$dirty">{{errors.ten}}</small>
     </div>
     <div class="form-group">
         <label for="mauSacDescription">Mô tả</label>
-        <textarea class="form-control" id="mauSacDescription" rows="3" ng-model="mauSac.moTa"></textarea>
+        <textarea class="form-control" id="mauSacDescription" rows="3" ng-model="mauSac.moTa" ng-change="change(mauSacForm.moTa)"></textarea>
         <small class="error-message" ng-show="errors.moTa && !mauSacForm.moTa.$dirty">{{errors.moTa}}</small>
     </div>
     <button type="submit" class="btn btn-primary">Tạo mới</button>

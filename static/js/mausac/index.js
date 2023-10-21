@@ -10,21 +10,22 @@ app.config(function ($routeProvider, $locationProvider) {
             controller: 'detailMauSacController'
         }).when("/update/:id", {
             templateUrl: 'views/update.html',
-            controller: 'updatemauSacController'
+            controller: 'updateMauSacController'
         }).when("/add", {
             templateUrl: 'views/add.html',
-            controller: 'addmauSacController'
+            controller: 'addMauSacController'
         })
         .otherwise({ redirectTo: '/danhsach' });
 });
 
-app.controller("addmauSacController", function ($scope, $http, $location) {
+app.controller("addMauSacController", function ($scope, $http, $location) {
     $scope.mauSac = {};
-    $scope.addmauSac = function () {
+    $scope.change = function (input) {
+        input.$dirty = true;
+    }
+
+    $scope.addMauSac = function () {
         if ($scope.mauSacForm.$invalid) {
-            $scope.mauSacForm.ten.$error.required = true;
-            $scope.mauSacForm.ten.$dirty = true;
-            console.log($scope.mauSacForm);
             return;
         }
         $http.post(host + '/admin/rest/mau-sac', $scope.mauSac)
@@ -37,6 +38,8 @@ app.controller("addmauSacController", function ($scope, $http, $location) {
             .catch(function (error) {
                 toastr["error"]("Thêm thất bại");
                 if (error.status === 400) {
+                    $scope.mauSacForm.ten.$dirty = false;
+                    $scope.mauSacForm.moTa.$dirty = false;
                     $scope.errors = error.data;
                 }
             });
@@ -56,8 +59,11 @@ app.controller("mauSacListController", function ($scope, $http, $window, $locati
         });
 });
 
-app.controller("updatemauSacController", function ($scope, $http, $routeParams, $location) {
+app.controller("updateMauSacController", function ($scope, $http, $routeParams, $location) {
     const id = $routeParams.id;
+    $scope.change = function (input) {
+        input.$dirty = true;
+    }
     $http.get(host + '/admin/rest/mau-sac/' + id)
         .then(function (response) {
             $scope.mauSac = response.data;
@@ -66,11 +72,8 @@ app.controller("updatemauSacController", function ($scope, $http, $routeParams, 
             $location.path("/danhsach");
         });
 
-    $scope.updatemauSac = function () {
+    $scope.updateMauSac = function () {
         if ($scope.mauSacForm.$invalid) {
-            $scope.mauSacForm.ten.$error.required = true;
-            $scope.mauSacForm.ten.$dirty = true;
-            console.log($scope.mauSacForm);
             return;
         }
         $http.put(host + '/admin/rest/mau-sac/' + id, $scope.mauSac)
@@ -84,6 +87,8 @@ app.controller("updatemauSacController", function ($scope, $http, $routeParams, 
             }).catch(function (error) {
                 toastr["error"]("Cập nhật thất bại");
                 if (error.status === 400) {
+                    $scope.mauSacForm.ten.$dirty = false;
+                    $scope.mauSacForm.moTa.$dirty = false;
                     $scope.errors = error.data;
                 }
             })
