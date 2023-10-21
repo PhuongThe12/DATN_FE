@@ -1,4 +1,4 @@
-var app = angular.module("app", ["ngRoute"]);
+var app = angular.module("app", ["ngRoute", "ui.bootstrap"]);
 app.config(function ($routeProvider, $locationProvider) {
     $locationProvider.hashPrefix('');
     $routeProvider
@@ -49,14 +49,27 @@ app.controller("addMauSacController", function ($scope, $http, $location) {
 
 
 app.controller("mauSacListController", function ($scope, $http, $window, $location) {
-    $http.get(host + '/admin/rest/mau-sac/get-all')
-        .then(function (response) {
-            $scope.mauSacs = response.data;
-        })
-        .catch(function (error) {
-            toastr["error"]("Lấy dữ liệu thất bại");
-            window.location.href = feHost + '/trang-chu';
-        });
+
+    $scope.curPage = 1,
+        $scope.itemsPerPage = 1,
+        $scope.maxSize = 5;
+
+    function getData(currentPage) {
+        $http.get(host + '/admin/rest/mau-sac?page=' + currentPage)
+            .then(function (response) {
+                $scope.mauSacs = response.data.content;
+                $scope.numOfPages = response.data.totalPages;
+            })
+            .catch(function (error) {
+                toastr["error"]("Lấy dữ liệu thất bại");
+                window.location.href = feHost + '/trang-chu';
+            });
+    }
+
+    $scope.$watch('curPage + numPerPage', function () {
+        getData($scope.curPage);
+    });
+
 });
 
 app.controller("updateMauSacController", function ($scope, $http, $routeParams, $location) {
